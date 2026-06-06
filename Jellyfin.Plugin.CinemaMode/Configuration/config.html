@@ -1,4 +1,48 @@
 <!DOCTYPE html>
+
+<script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
+<style>
+    .timeline-segment {
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin: 4px 0;
+        cursor: default;
+        background-color: #292929;
+        color: white;
+    }
+
+    .drag-handle {
+        cursor: move;
+        padding: 10px;
+    }
+
+    .collapse-handle {
+        cursor: pointer;
+        padding: 10px;
+    }
+
+    .collapsible {
+        margin: 20px;
+        display: none;
+    }
+
+    .up-carot {
+        display: none;
+    }
+
+    .down-carot {
+        display: inline;
+    }
+
+    .undraggable {
+        padding-left:20px;
+    }
+
+    .blue-background-class {
+        background-color: lightblue;
+    }
+</style>
+
 <html>
 <head>
     <title>CinemaMode</title>
@@ -9,7 +53,7 @@
             <div class="content-primary">
                 <form class="cinemaModeConfigurationPage">
                     <div class="sectionTitleContainer flex align-items-center">
-                        <h2 class="sectionTitle">Cinema Mode22</h2>
+                        <h2 class="sectionTitle">Cinema Mode</h2>
                         <a is="emby-linkbutton" class="raised button-alt headerHelpButton emby-button" target="_blank" href="https://github.com/CherryFloors/jellyfin-plugin-cinemamode#user-guide">Help</a>
                     </div>
                     <div class="verticalSection">
@@ -30,6 +74,104 @@
                         </div>
                         <br/>
                     </div>
+
+                    <!-- Pre Roll: Timeline -->
+                    <fieldset class="verticalSection verticalSection-extrabottompadding">
+                        <legend>
+                            <h3 class="sectionTitle">Timeline</h3>
+                        </legend>
+                        <div id="timeline">
+                            <div class="timeline-segment">
+                                <span class="drag-handle">⠿</span>
+                                <span>Item 1</span>
+                                <span class="collapse-handle">
+                                    <img class="down-carot" src="../Images/down-carot.png"></img>
+                                    <img class="up-carot" src="../Images/up-carot.png"></img>
+                                </span>
+                                <div class="collapsible"><br>Settings go here</div>
+                            </div>
+                            <div class="timeline-segment">
+                                <span class="drag-handle">⠿</span>
+                                <span>Item 2</span>
+                                <span class="collapse-handle">
+                                    <img class="down-carot" src="../Images/down-carot.png"></img>
+                                    <img class="up-carot" src="../Images/up-carot.png"></img>
+                                </span>
+                                <div class="collapsible"><br>Settings go here</div>
+                            </div>
+                            <div class="timeline-segment">
+                                <span class="drag-handle">⠿</span>
+                                <span>Item 3</span>
+                                <span class="collapse-handle">
+                                    <img class="down-carot" src="../Images/down-carot.png"></img>
+                                    <img class="up-carot" src="../Images/up-carot.png"></img>
+                                </span>
+                                <div class="collapsible"><br>Settings go here</div>
+                            </div>
+                            <div class="timeline-segment undraggable">
+                                <span>Feature Presentation</span>
+                            </div>
+                            <div class="timeline-segment">
+                                <span class="drag-handle">⠿</span>
+                                <span>Item 4</span>
+                                <span class="collapse-handle">
+                                    <img class="down-carot" src="../Images/down-carot.png"></img>
+                                    <img class="up-carot" src="../Images/up-carot.png"></img>
+                                </span>
+                                <div class="collapsible"><br>Settings go here</div>
+                            </div>
+                            <div class="timeline-segment">
+                                <span class="drag-handle">⠿</span>
+                                <span>Item 5</span>
+                                <span class="collapse-handle">
+                                    <img class="down-carot" src="../Images/down-carot.png"></img>
+                                    <img class="up-carot" src="../Images/up-carot.png"></img>
+                                </span>
+                                <div class="collapsible"><br>Settings go here</div>
+                            </div>
+                            <div class="timeline-segment">
+                                <span class="drag-handle">⠿</span>
+                                <span>Item 6</span>
+                                <span class="collapse-handle">
+                                    <img class="down-carot" src="../Images/down-carot.png"></img>
+                                    <img class="up-carot" src="../Images/up-carot.png"></img>
+                                </span>
+                                <div class="collapsible"><br>Settings go here</div>
+                            </div>
+                        </div>
+                        <script>
+                            const timeline = document.getElementById('timeline');
+
+                            new Sortable(timeline, {
+                                animation: 150,
+                                ghostClass: 'blue-background-class',
+                                swapThreshold: 0.50,
+                                handle: '.drag-handle',
+                                filter: '.undraggable'
+                            });
+
+                            var collapsehandle = document.getElementsByClassName("collapse-handle");
+                            var i;
+                            for (i = 0; i < collapsehandle.length; i++) {
+                              collapsehandle[i].addEventListener("click", function() {
+                                this.classList.toggle("active");
+                                const collapsible = this.nextElementSibling;
+                                const downCarot = this.querySelector(".down-carot");
+                                const upCarot = this.querySelector(".up-carot");
+
+                                if (collapsible.style.display === "block") {
+                                    collapsible.style.display = "none";
+                                    downCarot.style.display = "inline";
+                                    upCarot.style.display = "none";
+                                } else {
+                                    collapsible.style.display = "block";
+                                    downCarot.style.display = "none";
+                                    upCarot.style.display = "inline";
+                                }
+                              });
+                            }
+                        </script>
+                    </fieldset>
                     
                     <!-- Pre Roll: Trailers -->
                     <fieldset class="verticalSection verticalSection-extrabottompadding">
