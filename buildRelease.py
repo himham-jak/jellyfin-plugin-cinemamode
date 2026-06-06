@@ -44,7 +44,7 @@ class Meta:
             changelog=changelog,
             description=build_yaml["description"],
             guid=build_yaml["guid"],
-            imageUrl="https://github.com/CherryFloors/jellyfin-plugin-cinemamode/raw/main/Jellyfin.Plugin.CinemaMode/Images/jellyfin-plugin-cinemamode.png",
+            imageUrl="https://github.com/himham-jak/jellyfin-plugin-cinemamode/raw/main/Jellyfin.Plugin.CinemaMode/Images/jellyfin-plugin-cinemamode.png",
             name=build_yaml["name"],
             overview=build_yaml["overview"],
             owner=build_yaml["owner"],
@@ -94,7 +94,7 @@ class ManifestEntry:
             checksum=_checksum,
             changelog=meta.changelog,
             targetAbi=meta.targetAbi,
-            sourceUrl=f"https://github.com/CherryFloors/jellyfin-plugin-cinemamode/releases/download/v{meta.version}/{meta.zip_file_name}",
+            sourceUrl=f"https://github.com/himham-jak/jellyfin-plugin-cinemamode/releases/download/v{meta.version}/{meta.zip_file_name}",
             timestamp=meta.timestamp,
             version=meta.version,
         )
