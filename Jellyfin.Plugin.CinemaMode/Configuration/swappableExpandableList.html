@@ -70,7 +70,7 @@
         </span>
         <div class="collapsible"><br>Settings go here</div>
     </div>
-    <div class="timeline-segment undraggable">
+    <div class="timeline-segment undraggable" data-id="feature">
         <span>Feature Presentation</span>
     </div>
     <div class="timeline-segment">
@@ -105,7 +105,7 @@
 <script>
     const timeline = document.getElementById('timeline');
 
-    new Sortable(timeline, {
+    const sortable = new Sortable(timeline, {
         animation: 150,
         ghostClass: 'blue-background-class',
         swapThreshold: 0.50,

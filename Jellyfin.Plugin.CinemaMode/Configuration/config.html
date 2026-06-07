@@ -81,68 +81,17 @@
                             <h3 class="sectionTitle">Timeline</h3>
                         </legend>
                         <div id="timeline">
-                            <div class="timeline-segment">
-                                <span class="drag-handle">⠿</span>
-                                <span>Item 1</span>
-                                <span class="collapse-handle">
-                                    <img class="down-carot" src="../Images/down-carot.png"></img>
-                                    <img class="up-carot" src="../Images/up-carot.png"></img>
-                                </span>
-                                <div class="collapsible"><br>Settings go here</div>
-                            </div>
-                            <div class="timeline-segment">
-                                <span class="drag-handle">⠿</span>
-                                <span>Item 2</span>
-                                <span class="collapse-handle">
-                                    <img class="down-carot" src="../Images/down-carot.png"></img>
-                                    <img class="up-carot" src="../Images/up-carot.png"></img>
-                                </span>
-                                <div class="collapsible"><br>Settings go here</div>
-                            </div>
-                            <div class="timeline-segment">
-                                <span class="drag-handle">⠿</span>
-                                <span>Item 3</span>
-                                <span class="collapse-handle">
-                                    <img class="down-carot" src="../Images/down-carot.png"></img>
-                                    <img class="up-carot" src="../Images/up-carot.png"></img>
-                                </span>
-                                <div class="collapsible"><br>Settings go here</div>
-                            </div>
                             <div class="timeline-segment undraggable">
                                 <span>Feature Presentation</span>
                             </div>
-                            <div class="timeline-segment">
-                                <span class="drag-handle">⠿</span>
-                                <span>Item 4</span>
-                                <span class="collapse-handle">
-                                    <img class="down-carot" src="../Images/down-carot.png"></img>
-                                    <img class="up-carot" src="../Images/up-carot.png"></img>
-                                </span>
-                                <div class="collapsible"><br>Settings go here</div>
-                            </div>
-                            <div class="timeline-segment">
-                                <span class="drag-handle">⠿</span>
-                                <span>Item 5</span>
-                                <span class="collapse-handle">
-                                    <img class="down-carot" src="../Images/down-carot.png"></img>
-                                    <img class="up-carot" src="../Images/up-carot.png"></img>
-                                </span>
-                                <div class="collapsible"><br>Settings go here</div>
-                            </div>
-                            <div class="timeline-segment">
-                                <span class="drag-handle">⠿</span>
-                                <span>Item 6</span>
-                                <span class="collapse-handle">
-                                    <img class="down-carot" src="../Images/down-carot.png"></img>
-                                    <img class="up-carot" src="../Images/up-carot.png"></img>
-                                </span>
-                                <div class="collapsible"><br>Settings go here</div>
-                            </div>
                         </div>
+                        <button onclick="addSegment('timeline','Preroll');initializeCollapseHandles()" is="emby-button" type="button" class="fab emby-button" style="margin-left:1em" title="Add"> 
+                            <span class="material-icons add" aria-hidden="true"></span>
+                        </button>
                         <script>
                             const timeline = document.getElementById('timeline');
 
-                            new Sortable(timeline, {
+                            const sortable = new Sortable(timeline, {
                                 animation: 150,
                                 ghostClass: 'blue-background-class',
                                 swapThreshold: 0.50,
@@ -346,12 +295,103 @@
         </div>
         <script type="text/javascript">
             var pluginId = "5fcefe1b-df1f-4596-ac57-f2f939c294c5";
-            var mediaFolders = ApiClient.getVirtualFolders();    
+            var mediaFolders = ApiClient.getVirtualFolders();
+
+            // returns a segment
+            function returnSegment(prefix, title) {
+                var opt = document.createElement('div'); 
+                opt.setAttribute("class", "listItem listItem-border");
+
+                var innerHTML = '<div class="timeline-segment">';
+                innerHTML += '<span class="drag-handle">⠿</span>';
+
+                innerHTML += '<span>' + title + '</span>';
+
+                innerHTML += '<span class="collapse-handle">';
+                innerHTML += '<img class="down-carot" src="../Images/down-carot.png"></img>';
+                innerHTML += '<img class="up-carot" src="../Images/up-carot.png"></img>';
+                innerHTML += '</span>';
+
+                innerHTML += '<div class="collapsible"><br>';
+                innerHTML += '<div class="inputContainer">';
+
+                innerHTML += '<label class="inputLabel inputLabelUnfocused">Title</label>';
+                innerHTML += '<input type="text" is="emby-input"/>';
+                innerHTML += '<div class="fieldDescription">';
+                innerHTML += 'The title of the segment on this timeline';
+                innerHTML += '</div>';
+                
+                innerHTML += '<label class="inputLabel inputLabelUnfocused">Selection Method</label>';
+                innerHTML += '<select is="emby-select" class="emby-select-withcolor emby-select" label="">';
+                innerHTML += '<option value="">Random</option>';
+                innerHTML += '<option value="">In order</option>';
+                innerHTML += '<option value="">Individually selected</option>';
+                innerHTML += '</select>';
+                innerHTML += '<div class="selectArrowContainer">';
+                innerHTML += '<div style="visibility:hidden;display:none;">0</div>';
+                innerHTML += '<span class="selectArrow material-icons keyboard_arrow_down" aria-hidden="true"></span>';
+                innerHTML += '</div>';
+                innerHTML += '<div class="fieldDescription">';
+                innerHTML += 'The method by which the clips are chosen.';
+                innerHTML += '</div>';
+                
+                innerHTML += '<label class="selectLabel" for="trailerPreRollLibrarySelect">Number</label>';
+                innerHTML += '<input type="number" id="number-trailers" name="number-trailers" is="emby-input"/>';
+                innerHTML += '<div class="fieldDescription">';
+                innerHTML += 'The number of clips to play.';
+                innerHTML += '</div>';
+
+                innerHTML += '</div>';
+                innerHTML += '</div>';
+                innerHTML += '</div>';
+
+                opt.innerHTML = innerHTML;
+                return opt
+            };
+
+            // add segment to timeline
+            function addSegment(id, title="Segment") {
+                var selector = document.getElementById(id);
+                var newRule = returnSegment(id, title);
+                selector.appendChild(newRule);
+                return newRule;
+            };
+
+            // make sure newly created segments can collapse
+            function initializeCollapseHandles() {
+                const handles = document.querySelectorAll(".collapse-handle");
+
+                handles.forEach(handle => {
+
+                    if (handle.dataset.initialized) {
+                        return;
+                    }
+
+                    handle.dataset.initialized = "true";
+
+                    handle.addEventListener("click", function() {
+                                            this.classList.toggle("active");
+                                            const collapsible = this.nextElementSibling;
+                                            const downCarot = this.querySelector(".down-carot");
+                                            const upCarot = this.querySelector(".up-carot");
+
+                                            if (collapsible.style.display === "block") {
+                                                collapsible.style.display = "none";
+                                                downCarot.style.display = "inline";
+                                                upCarot.style.display = "none";
+                                            } else {
+                                                collapsible.style.display = "block";
+                                                downCarot.style.display = "none";
+                                                upCarot.style.display = "inline";
+                                            }
+                                          });
+                });
+            }
 
             function removeListItem(item) {
                 var p = item.parentElement;
                 p.remove();
-            };
+            }
 
             function clearList(id) {
                 var listItems = document.getElementById(id);
@@ -490,6 +530,7 @@
                 return rules
             }
 
+            // returns a labeled html checkbox
             function preRollQueryCheckbox(label) {
                 var checkbox = '<input type="checkbox" id="'.concat(label);
                 checkbox += '" name="';
@@ -499,6 +540,7 @@
                 return '<label style="margin-right: 20px">'.concat(checkbox).concat('</label>');
             };
 
+            // returns a div containing the labeled html checkboxes
             function preRollQueryRuleFactory(prefix) {
                 var opt = document.createElement('div'); 
                 opt.setAttribute("class", "listItem listItem-border"); 
@@ -520,6 +562,7 @@
                 return opt
             };
 
+            // appends the checkbox div to the selected element
             function addPreRollRule(id) {
                 var selector = document.getElementById(id);
                 var newRule = preRollQueryRuleFactory(id);

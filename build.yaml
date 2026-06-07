@@ -1,6 +1,6 @@
 name: 'Cinema Mode'
 guid: '5fcefe1b-df1f-4596-ac57-f2f939c294c5'
-version: '0.6.1.0'
+version: '0.6.1.1'
 targetAbi: '10.11.0.0'
 framework: 'net9.0'
 owner: 'himham-jak'
@@ -11,4 +11,4 @@ category: 'General'
 artifacts:
 - 'Jellyfin.Plugin.CinemaMode.dll'
 changelog:
-  - Proof of concept edit
+  - Added the timeline as a sortable list
